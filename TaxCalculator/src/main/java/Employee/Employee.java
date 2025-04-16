@@ -21,6 +21,18 @@ public class Employee {
 
     private EmployeesFamily employeesFamily;
 
+    public EmployeeIdentity getEmployeeIdentity() {
+        return employeeIdentity;
+    }
+
+    public EmployeeFinance getEmployeeFinance() {
+        return employeeFinance;
+    }
+
+    public EmployeesFamily getEmployeesFamily() {
+        return employeesFamily;
+    }
+
     public Employee(String employeeId, String firstName, String lastName, String idNumber, String address, LocalDate joinDate, boolean isForeigner, Gender gender) {
         this.employeeIdentity = new EmployeeIdentity();
         this.employeeIdentity.setEmployeeId(employeeId);
@@ -68,6 +80,6 @@ public class Employee {
             employeeIdentity.setMonthWorkingInYear(12);
         }
 
-        return TaxFunction.calculateTax(employeeFinance.getMonthlySalary(), employeeFinance.getOtherMonthlyIncome(), employeeIdentity.getMonthWorkingInYear(), employeeFinance.getAnnualDeductible(), false, employeesFamily.getChildrens().size());
+        return TaxFunction.calculateTax(this);
     }
 }
