@@ -28,7 +28,6 @@ public class TaxFunction {
      */
     public static int calculateTax(Employee employee) {
 
-        int tax = 0;
         int numberOfMonthWorking = employee.getEmployeeIdentity().getMonthWorkingInYear();
         int numberOfChildren = employee.getEmployeesFamily().getChildrens().size();
         boolean isMarried = !employee.getEmployeesFamily().getSpouse().getSpouseName().equals("");
@@ -44,17 +43,23 @@ public class TaxFunction {
             numberOfChildren = 3;
         }
 
+        return getFinalTax(isMarried, monthlySalary, otherMonthlyIncome, numberOfMonthWorking, deductible, numberOfChildren);
+
+    }
+
+    private static int getFinalTax(boolean isMarried, int monthlySalary, int otherMonthlyIncome, int numberOfMonthWorking, int deductible, int numberOfChildren) {
+        int tax;
         if (isMarried) {
             tax = (int) Math.round(0.05 * (((monthlySalary + otherMonthlyIncome) * numberOfMonthWorking) - deductible - (54000000 + 4500000 + (numberOfChildren * 1500000))));
+
         } else {
             tax = (int) Math.round(0.05 * (((monthlySalary + otherMonthlyIncome) * numberOfMonthWorking) - deductible - 54000000));
-        }
 
+        }
         if (tax < 0) {
             return 0;
         } else {
             return tax;
         }
-
     }
 }
