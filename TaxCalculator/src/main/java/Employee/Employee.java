@@ -16,81 +16,55 @@ import java.util.List;
  */
 public class Employee {
 
-    private String employeeId;
-    private String firstName;
-    private String lastName;
-    private String idNumber;
-    private String address;
+    private EmployeeIdentity employeeIdentity;
 
-    private int yearJoined;
-    private int monthJoined;
-    private int dayJoined;
-    private int monthWorkingInYear;
+    private EmployeeFinance employeeFinance;
 
-    private boolean isForeigner;
-    private boolean gender; //true = Laki-laki, false = Perempuan
-
-    private int monthlySalary;
-    private int otherMonthlyIncome;
-    private int annualDeductible;
-
-    private String spouseName;
-    private String spouseIdNumber;
-
-    private List<String> childNames;
-    private List<String> childIdNumbers;
+    private EmployeesFamily employeesFamily;
 
     public Employee(String employeeId, String firstName, String lastName, String idNumber, String address, int yearJoined, int monthJoined, int dayJoined, boolean isForeigner, boolean gender) {
-        this.employeeId = employeeId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.idNumber = idNumber;
-        this.address = address;
-        this.yearJoined = yearJoined;
-        this.monthJoined = monthJoined;
-        this.dayJoined = dayJoined;
-        this.isForeigner = isForeigner;
-        this.gender = gender;
+        this.employeeIdentity = new EmployeeIdentity();
+        this.employeeIdentity.setEmployeeId(employeeId);
+        this.employeeIdentity.setFirstName(firstName);
+        this.employeeIdentity.setLastName(lastName);
+        this.employeeIdentity.setIdNumber(idNumber);
+        this.employeeIdentity.setAddress(address);
+        this.employeeIdentity.setYearJoined(yearJoined);
+        this.employeeIdentity.setMonthJoined(monthJoined);
+        this.employeeIdentity.setDayJoined(dayJoined);
+        this.employeeIdentity.setIsForeigner(isForeigner);
+        this.employeeIdentity.setGender(gender);
 
-        childNames = new LinkedList<String>();
-        childIdNumbers = new LinkedList<String>();
+        this.employeeFinance = new EmployeeFinance();
+        this.employeesFamily = new EmployeesFamily();
+
     }
 
     public void setMonthlySalary(int grade) {
         if (grade == 1) {
-            monthlySalary = 3000000;
-            if (isForeigner) {
-                monthlySalary = (int) (3000000 * 1.5);
+            employeeFinance.setMonthlySalary(3000000);
+            if (employeeIdentity.getisForeigner()) {
+                employeeFinance.setMonthlySalary((int) (3000000 * 1.5));
             }
         } else if (grade == 2) {
-            monthlySalary = 5000000;
-            if (isForeigner) {
-                monthlySalary = (int) (3000000 * 1.5);
+            employeeFinance.setMonthlySalary(5000000);
+            if (employeeIdentity.getisForeigner()) {
+                employeeFinance.setMonthlySalary((int) (5000000 * 1.5));
             }
         } else if (grade == 3) {
-            monthlySalary = 7000000;
-            if (isForeigner) {
-                monthlySalary = (int) (3000000 * 1.5);
+            employeeFinance.setMonthlySalary(7000000);
+            if (employeeIdentity.getisForeigner()) {
+                employeeFinance.setMonthlySalary((int) (700000 * 1.5));
             }
         }
     }
 
     public void setAnnualDeductible(int deductible) {
-        this.annualDeductible = deductible;
+        this.employeeFinance.setAnnualDeductible(deductible);
     }
 
     public void setAdditionalIncome(int income) {
-        this.otherMonthlyIncome = income;
-    }
-
-    public void setSpouse(String spouseName, String spouseIdNumber) {
-        this.spouseName = spouseName;
-        this.spouseIdNumber = idNumber;
-    }
-
-    public void addChild(String childName, String childIdNumber) {
-        childNames.add(childName);
-        childIdNumbers.add(childIdNumber);
+        this.employeeFinance.setOtherMonthlyIncome(income);
     }
 
     public int getAnnualIncomeTax() {
@@ -98,12 +72,13 @@ public class Employee {
         //Menghitung berapa lama pegawai bekerja dalam setahun ini, jika pegawai sudah bekerja dari tahun sebelumnya maka otomatis dianggap 12 bulan.
         LocalDate date = LocalDate.now();
 
-        if (date.getYear() == yearJoined) {
-            monthWorkingInYear = date.getMonthValue() - monthJoined;
+        if (date.getYear() == employeeIdentity.getYearJoined()) {
+            int monthWorkingInYear = date.getMonthValue() - employeeIdentity.getMonthJoined();
+            employeeIdentity.setMonthWorkingInYear(monthWorkingInYear);
         } else {
-            monthWorkingInYear = 12;
+            employeeIdentity.setMonthWorkingInYear(12);
         }
 
-        return TaxFunction.calculateTax(monthlySalary, otherMonthlyIncome, monthWorkingInYear, annualDeductible, spouseIdNumber.equals(""), childIdNumbers.size());
+        return TaxFunction.calculateTax(employeeFinance.getMonthlySalary(), employeeFinance.getOtherMonthlyIncome(), employeeIdentity.getMonthWorkingInYear(), employeeFinance.getAnnualDeductible(), employeesFamily.getSpouse().equals(""), employeesFamily.getChildrens().size());
     }
 }
