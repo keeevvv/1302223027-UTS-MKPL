@@ -5,6 +5,7 @@
 package Employee;
 
 import Enum.Gender;
+import Enum.SalarayGrade;
 import TaxFunction.TaxFunction;
 import java.time.LocalDate;
 
@@ -37,23 +38,14 @@ public class Employee {
 
     }
 
-    public void setMonthlySalary(int grade) {
-        if (grade == 1) {
-            employeeFinance.setMonthlySalary(3000000);
-            if (employeeIdentity.isIsForeigner()) {
-                employeeFinance.setMonthlySalary((int) (3000000 * 1.5));
-            }
-        } else if (grade == 2) {
-            employeeFinance.setMonthlySalary(5000000);
-            if (employeeIdentity.isIsForeigner()) {
-                employeeFinance.setMonthlySalary((int) (5000000 * 1.5));
-            }
-        } else if (grade == 3) {
-            employeeFinance.setMonthlySalary(7000000);
-            if (employeeIdentity.isIsForeigner()) {
-                employeeFinance.setMonthlySalary((int) (700000 * 1.5));
-            }
+    public void setMonthlySalary(SalarayGrade grade) {
+        int salary = grade.getSalary();
+        if (employeeIdentity.isIsForeigner()) {
+            salary = (int) (salary * 1.5);
+
         }
+
+        employeeFinance.setMonthlySalary(salary);
     }
 
     public void setAnnualDeductible(int deductible) {
