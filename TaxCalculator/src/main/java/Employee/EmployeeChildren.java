@@ -10,4 +10,23 @@ package Employee;
  */
 public class EmployeeChildren {
 
+    private String childNames;
+    private String childIdNumber;
+
+    public String getChildNames() {
+        return childNames;
+    }
+
+    public String getChildIdNumber() {
+        return childIdNumber;
+    }
+
+    public void setChildNames(String childNames) {
+        this.childNames = childNames;
+    }
+
+    public void setChildIdNumber(String childIdNumber) {
+        this.childIdNumber = childIdNumber;
+    }
+
 }

@@ -4,11 +4,9 @@
  */
 package Employee;
 
+import Enum.Gender;
 import TaxFunction.TaxFunction;
 import java.time.LocalDate;
-import java.time.Month;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  *
@@ -22,38 +20,37 @@ public class Employee {
 
     private EmployeesFamily employeesFamily;
 
-    public Employee(String employeeId, String firstName, String lastName, String idNumber, String address, int yearJoined, int monthJoined, int dayJoined, boolean isForeigner, boolean gender) {
+    public Employee(String employeeId, String firstName, String lastName, String idNumber, String address, LocalDate joinDate, boolean isForeigner, Gender gender) {
         this.employeeIdentity = new EmployeeIdentity();
         this.employeeIdentity.setEmployeeId(employeeId);
         this.employeeIdentity.setFirstName(firstName);
         this.employeeIdentity.setLastName(lastName);
         this.employeeIdentity.setIdNumber(idNumber);
         this.employeeIdentity.setAddress(address);
-        this.employeeIdentity.setYearJoined(yearJoined);
-        this.employeeIdentity.setMonthJoined(monthJoined);
-        this.employeeIdentity.setDayJoined(dayJoined);
+        this.employeeIdentity.setJoinDate(joinDate);
         this.employeeIdentity.setIsForeigner(isForeigner);
         this.employeeIdentity.setGender(gender);
 
         this.employeeFinance = new EmployeeFinance();
         this.employeesFamily = new EmployeesFamily();
+        this.employeesFamily.setSpouse("", "");
 
     }
 
     public void setMonthlySalary(int grade) {
         if (grade == 1) {
             employeeFinance.setMonthlySalary(3000000);
-            if (employeeIdentity.getisForeigner()) {
+            if (employeeIdentity.isIsForeigner()) {
                 employeeFinance.setMonthlySalary((int) (3000000 * 1.5));
             }
         } else if (grade == 2) {
             employeeFinance.setMonthlySalary(5000000);
-            if (employeeIdentity.getisForeigner()) {
+            if (employeeIdentity.isIsForeigner()) {
                 employeeFinance.setMonthlySalary((int) (5000000 * 1.5));
             }
         } else if (grade == 3) {
             employeeFinance.setMonthlySalary(7000000);
-            if (employeeIdentity.getisForeigner()) {
+            if (employeeIdentity.isIsForeigner()) {
                 employeeFinance.setMonthlySalary((int) (700000 * 1.5));
             }
         }
@@ -72,13 +69,13 @@ public class Employee {
         //Menghitung berapa lama pegawai bekerja dalam setahun ini, jika pegawai sudah bekerja dari tahun sebelumnya maka otomatis dianggap 12 bulan.
         LocalDate date = LocalDate.now();
 
-        if (date.getYear() == employeeIdentity.getYearJoined()) {
-            int monthWorkingInYear = date.getMonthValue() - employeeIdentity.getMonthJoined();
+        if (date.getYear() == employeeIdentity.getJoinDate().getYear()) {
+            int monthWorkingInYear = date.getMonthValue() - employeeIdentity.getJoinDate().getMonthValue();
             employeeIdentity.setMonthWorkingInYear(monthWorkingInYear);
         } else {
             employeeIdentity.setMonthWorkingInYear(12);
         }
 
-        return TaxFunction.calculateTax(employeeFinance.getMonthlySalary(), employeeFinance.getOtherMonthlyIncome(), employeeIdentity.getMonthWorkingInYear(), employeeFinance.getAnnualDeductible(), employeesFamily.getSpouse().equals(""), employeesFamily.getChildrens().size());
+        return TaxFunction.calculateTax(employeeFinance.getMonthlySalary(), employeeFinance.getOtherMonthlyIncome(), employeeIdentity.getMonthWorkingInYear(), employeeFinance.getAnnualDeductible(), false, employeesFamily.getChildrens().size());
     }
 }
