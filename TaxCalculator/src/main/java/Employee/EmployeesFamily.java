@@ -34,4 +34,13 @@ public class EmployeesFamily {
         child.setChildNames(childName);
         Childrens.add(child);
     }
+
+    public EmployeeSpouse getSpouse() {
+        return spouse;
+    }
+
+    public List<EmployeeChildren> getChildrens() {
+        return Childrens;
+    }
+
 }

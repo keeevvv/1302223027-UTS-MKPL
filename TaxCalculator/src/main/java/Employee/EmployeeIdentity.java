@@ -4,6 +4,9 @@
  */
 package Employee;
 
+import Enum.Gender;
+import java.time.LocalDate;
+
 /**
  *
  * @author kevin
@@ -16,7 +19,9 @@ public class EmployeeIdentity {
     private String idNumber;
     private String address;
     private boolean isForeigner;
-    private boolean gender; //true = Laki-laki, false = Perempuan
+    private Gender gender;
+    private LocalDate joinDate;
+    private int monthWorkingInYear;
 
     public String getEmployeeId() {
         return employeeId;
@@ -38,12 +43,20 @@ public class EmployeeIdentity {
         return address;
     }
 
-    public boolean getisForeigner() {
+    public boolean isIsForeigner() {
         return isForeigner;
     }
 
-    public boolean getGender() {
+    public Gender getGender() {
         return gender;
+    }
+
+    public LocalDate getJoinDate() {
+        return joinDate;
+    }
+
+    public int getMonthWorkingInYear() {
+        return monthWorkingInYear;
     }
 
     public void setEmployeeId(String employeeId) {
@@ -70,8 +83,16 @@ public class EmployeeIdentity {
         this.isForeigner = isForeigner;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public void setJoinDate(LocalDate joinDate) {
+        this.joinDate = joinDate;
+    }
+
+    public void setMonthWorkingInYear(int monthWorkingInYear) {
+        this.monthWorkingInYear = monthWorkingInYear;
     }
 
 }
